@@ -1,0 +1,17 @@
+{
+    "name": "moises.rodriguez/phpunit-test",
+    "autoload": {
+        "classmap": [
+            "src/"
+        ]
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11"
+    },
+    "authors": [
+        {
+            "name": "moises.rodriguez",
+            "email": "moises.rodriguez@codurance.com"
+        }
+    ]
+}
