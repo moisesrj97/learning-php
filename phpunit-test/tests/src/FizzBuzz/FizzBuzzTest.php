@@ -6,7 +6,10 @@ use PHPUnit\Framework\TestCase;
 
 class FizzBuzzTest extends TestCase
 {
-    public function testShouldReturnFizzIfPassed3(): void
+    /**
+     * @dataProvider testCasesForFizzBuzz
+     */
+    public function testShouldParseInput(int $input, string $output): void
     {
         $input = 3;
         $expectedResult = "Fizz";
@@ -16,23 +19,12 @@ class FizzBuzzTest extends TestCase
         $this->assertEquals($result, $expectedResult);
     }
 
-    public function testShouldReturn1IfPassed1(): void
-    {
-        $input = 1;
-        $expectedResult = "1";
-
-        $result = FizzBuzz::parse($input);
-
-        $this->assertEquals($result, $expectedResult);
-    }
-
-    public function testShouldReturnBuzzIfPassed5(): void
-    {
-        $input = 5;
-        $expectedResult = "Buzz";
-
-        $result = FizzBuzz::parse($input);
-
-        $this->assertEquals($result, $expectedResult);
+    private function testCasesForFizzBuzz(): array {
+        return array(
+            array(3, "Fizz"),
+            array(5, "Buzz"),
+            array(15, "FizzBuzz"),
+            array(1, "1")
+        );
     }
 }
