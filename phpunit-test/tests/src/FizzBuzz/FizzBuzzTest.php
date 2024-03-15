@@ -25,4 +25,14 @@ class FizzBuzzTest extends TestCase
 
         $this->assertEquals($result, $expectedResult);
     }
+
+    public function testShouldReturnBuzzIfPassed5(): void
+    {
+        $input = 5;
+        $expectedResult = "Buzz";
+
+        $result = FizzBuzz::parse($input);
+
+        $this->assertEquals($result, $expectedResult);
+    }
 }
