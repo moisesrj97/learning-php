@@ -2,23 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Car;
+use App\Services\CarService;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class CarController extends Controller
 {
+
+    public function __construct(private readonly CarService $carService)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): JsonResponse
     {
-        return Car::query()->orderBy("updated_at", "desc")->paginate(10);
+        return response()->json($this->carService->list());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
             "brand" => "required|string",
@@ -27,7 +33,7 @@ class CarController extends Controller
             "kms" => "required|integer",
         ]);
 
-        Car::create($data);
+        $this->carService->create($data);
 
         return response()->json([], 201);
     }
@@ -35,28 +41,26 @@ class CarController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): JsonResponse
     {
-        $car = Car::find($id);
+        $car = $this->carService->find($id);
 
-        return response($car);
+        return response()->json($car);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, string $id): JsonResponse
     {
-        $data = $request->validate([
+        $fieldsToUpdate = $request->validate([
             "brand" => "string",
             "model" => "string",
             "year" => "integer",
             "kms" => "integer",
         ]);
 
-        $car = Car::find($id);
-        $car->update($data);
-        $car->save();
+        $this->carService->update($id, $fieldsToUpdate);
 
         return response()->json([], 201);
     }
@@ -64,9 +68,9 @@ class CarController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
-        Car::destroy($id);
+        $this->carService->delete($id);
 
         return response()->json([], 204);
     }
