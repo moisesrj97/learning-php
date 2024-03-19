@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\Car;
-use App\Models\CarRepository;
+use App\Domain\Car\Car;
+use App\Domain\Car\CarRepository;
+use App\Http\Controllers\CarSearchCriteria;
 
 class CarService
 {
@@ -11,9 +12,9 @@ class CarService
     {
     }
 
-    public function list(): array
+    public function list(CarSearchCriteria $criteria): array
     {
-        return $this->repository->list();
+        return $this->repository->list($criteria);
     }
 
     public function create(array $rawCar): void
@@ -21,9 +22,9 @@ class CarService
         $this->repository->save($rawCar);
     }
 
-    public function find(string $id): Car|null
+    public function find(CarFindCriteria $criteria): Car|null
     {
-        return $this->repository->find($id);
+        return $this->repository->find($criteria);
     }
 
     public function update(string $id, array $fieldsToUpdate): void

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CarFindCriteria;
 use App\Services\CarService;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,9 +17,15 @@ class CarController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return response()->json($this->carService->list());
+        $filter = $request->query("filter");
+
+        $findCriteria = new CarSearchCriteria();
+        $findCriteria->brand = $filter["brand"] ?? null;
+        $findCriteria->model = $filter["model"] ?? null;
+
+        return response()->json($this->carService->list($findCriteria));
     }
 
     /**
@@ -43,7 +50,10 @@ class CarController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        $car = $this->carService->find($id);
+        $findCriteria = new CarFindCriteria();
+        $findCriteria->id = $id;
+
+        $car = $this->carService->find($findCriteria);
 
         return response()->json($car);
     }

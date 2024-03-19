@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Models\CarRepository;
+use App\Domain\Car\CarRepository;
 use App\Repositories\EloquentCarRepository;
 use App\Services\CarService;
 use Illuminate\Support\ServiceProvider;
